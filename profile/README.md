@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../assets/xstream-poster.png" alt="XStream poster" width="100%" />
+  <img src="../assets/xstream-poster-public.png" alt="XStream production poster" width="100%" />
 </p>
 
 <h1 align="center">ai-workspace-xstream</h1>
@@ -23,6 +23,15 @@
 ## <a id="中文"></a>中文
 
 `ai-workspace-xstream` 是面向全球 AI 服务访问与私有网络互联的组织。我们把海外 AI 服务加速、桌面与移动端客户端、节点管理、隧道接入和安全访问整合到同一个产品体系里，让跨网络、跨设备的连接体验更稳、更快、更易管理。
+
+### 线上运行
+
+这不是演示页，而是实际在线运行的服务。
+
+- 真实生产环境持续提供服务
+- 支持 GitHub OAuth 登录
+- 支持 Google OAuth 登录
+- 面向实际用户的节点、隧道与账号体系
 
 ### 我们在做什么
 
@@ -66,6 +75,15 @@
 ## <a id="english"></a>English
 
 `ai-workspace-xstream` is the organization focused on global AI service acceleration and private network connectivity. We combine overseas AI access acceleration, desktop and mobile clients, node management, tunnel connectivity, and secure access into one product system so cross-network, cross-device experiences stay stable, fast, and manageable.
+
+### Live service
+
+This is a live production service, not a demo.
+
+- Running continuously in a real production environment
+- Supports GitHub OAuth login
+- Supports Google OAuth login
+- Built for real users, nodes, tunnels, and account workflows
 
 ### What we do
 
