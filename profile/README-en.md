@@ -1,8 +1,22 @@
 <p align="center">
-  <a href="README.md">Index</a> · <a href="README-zh.md">简体中文</a>
+  <img src="https://raw.githubusercontent.com/ai-workspace-xstream/.github/main/assets/xconnect-homepage-hero.png" alt="XConnect secure connectivity for AI workspaces" width="100%" />
 </p>
 
-# ai-workspace-xstream
+<h1 align="center">ai-workspace-xstream</h1>
+<p align="center"><strong>Secure connectivity and edge runtimes for AI workspaces</strong></p>
+
+<p align="center">
+  <a href="https://console.svc.plus/products/xconnect"><img src="https://img.shields.io/badge/XConnect-Console-0B5C7A?style=for-the-badge" alt="XConnect Console" /></a>
+  <a href="https://github.com/ai-workspace-xstream"><img src="https://img.shields.io/badge/GitHub-Organization-181717?style=for-the-badge&logo=github" alt="GitHub Organization" /></a>
+  <a href="https://github.com/ai-workspace-xstream/xconnect-gateway"><img src="https://img.shields.io/badge/Gateway-Linux-2563EB?style=for-the-badge" alt="Gateway Linux" /></a>
+  <a href="https://github.com/ai-workspace-xstream/xconnect-one"><img src="https://img.shields.io/badge/One-Cross--Platform-2F855A?style=for-the-badge" alt="One Cross-platform" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/ai-workspace-xstream/.github/blob/main/profile/README-zh.md">简体中文</a> ｜ <a href="https://github.com/ai-workspace-xstream/.github/blob/main/profile/README-en.md">English</a>
+</p>
+
+---
 
 ## 🇬🇧 Organization overview
 
@@ -29,21 +43,26 @@ The system keeps network roles separate. The control plane owns identity and sig
 
 ## 🏛️ Core pillars
 
-### 🔐 Zero Trust Control Plane
-
-Device identity, short-lived invitations, signed configuration, session renewal, and ACK form the network control boundary. XConnect One and Gateway validate signatures, expiry, network, and role binding locally. See the [accounts API](https://github.com/ai-workspace-services/accounts) for the control-plane implementation reference.
-
-### 🌐 Edge & Relay Runtime
-
-`xconnect-edge-agent` handles node configuration synchronization, heartbeats, Xray lifecycle, and the Caddy TLS entry point. `xconnect-gateway` provides an independent Linux Server relay/service. Neither repository should contain long-lived credentials or network invitations.
-
-### 💻 Controlled Client Experience
-
-`xconnect-one` is an independently released Go CLI for protected local Xray/WireGuard runtimes. `xconnect-app` provides Flutter desktop and mobile interfaces, node management, and diagnostics while preserving an explicit boundary with the CLI.
-
-### 📊 Observable & Operable
-
-`xray-exporter` converts Xray/V2Ray Stats API data and access logs into Prometheus metrics. `docs` maintains requirements, architecture, decisions, runbooks, incidents, and release notes. Acceptance must cover service state, handshake, data plane, and user-visible results.
+<table>
+<tr>
+<td width="25%" align="center" valign="top">
+<h3>Zero Trust</h3>
+<p align="left"><sub>Device identity, short-lived invitations, signed configuration and session renewal.</sub></p>
+</td>
+<td width="25%" align="center" valign="top">
+<h3>Edge & Relay</h3>
+<p align="left"><sub>Edge Agent manages node synchronization; Gateway provides the Linux relay runtime.</sub></p>
+</td>
+<td width="25%" align="center" valign="top">
+<h3>Controlled Clients</h3>
+<p align="left"><sub>One CLI supports macOS, Linux and Windows; the App provides desktop and mobile interfaces.</sub></p>
+</td>
+<td width="25%" align="center" valign="top">
+<h3>Observability</h3>
+<p align="left"><sub>Xray metrics, node logs, diagnostics and documented operational acceptance.</sub></p>
+</td>
+</tr>
+</table>
 
 ---
 
@@ -55,11 +74,16 @@ flowchart LR
     B --> C[Gateway<br/>Linux Relay]
     B --> D[Edge Agent<br/>Node Sync & Xray]
     B --> E[One CLI<br/>Controlled Client]
-    E --> F[XConnect App<br/>Desktop & Mobile]
+    F[XConnect App<br/>Desktop & Mobile] -. optional integration .-> E
     C --> G[WireGuard / Xray Data Plane]
     D --> G
     E --> G
     G --> H[Handshake · ACK · Target Response]
+    style A fill:#DBEAFE,stroke:#3B82F6
+    style B fill:#FEF3C7,stroke:#F59E0B
+    style C fill:#ECFDF5,stroke:#10B981
+    style D fill:#ECFDF5,stroke:#10B981
+    style E fill:#F3E8FF,stroke:#8B5CF6
 ```
 
 1. The control plane issues short-lived credentials and signed configuration bound to a device or Gateway.
@@ -87,36 +111,18 @@ flowchart LR
 
 See the complete [XConnect / Proxy-Server deployment routes runbook](https://github.com/ai-workspace-xstream/docs/blob/main/runbooks/2026-10-03-xconnect-deployment-routes.md).
 
-### Proxy-Server standalone
+| Route | Control plane | Components / platforms |
+| --- | --- | --- |
+| Standalone Proxy-Server | Standalone | Linux node with Caddy and Xray |
+| Full Stack Proxy-Server | Accounts + Vault | Edge Agent, TLS synchronization and monitoring |
+| Data-plane components | Install before enrollment | Gateway: Linux; One: macOS / Linux / Windows |
+| Full Stack XConnect Zero | Zero API | Gateway and One enrollment, signed config and ACK |
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/ai-workspace-xstream/xconnect-edge-agent/main/scripts/setup-proxy.sh | \
-  bash -s -- --node <node-domain> --standalone
-```
-
-### Proxy-Server Full Stack
-
-Inject runtime credentials through Vault or a Secret Manager first, then run:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/ai-workspace-xstream/xconnect-edge-agent/main/scripts/setup-proxy.sh | \
-  bash -s -- --node "$AGENT_PROXY_DOMAIN" --with-observability
-```
-
-### XConnect Zero CLI installation
-
-```bash
-curl -fsSL https://install.svc.plus/xconnect-gateway | \
-  sudo env XCONNECT_GATEWAY_VERSION=<approved-release-tag> bash
-
-curl -fsSL https://install.svc.plus/xconnect-one | \
-  sudo env XCONNECT_ONE_VERSION=<approved-release-tag> bash
-```
-
-The installers download and verify the CLI only. Enrollment, signed configuration, runtime startup, and data-plane acceptance continue through the relevant runbook.
+Choose a route in the deployment guide. CLI installation and network enrollment are separate steps.
 
 ---
 
-📘 [Complete deployment routes runbook](https://github.com/ai-workspace-xstream/docs/blob/main/runbooks/2026-10-03-xconnect-deployment-routes.md)
-
-Secure · Signed · Observable · Cross-platform · AI-workspace ready
+<p align="center">
+  <a href="https://github.com/ai-workspace-xstream/docs/blob/main/runbooks/2026-10-03-xconnect-deployment-routes.md"><strong>Complete deployment guide</strong></a><br />
+  <sub>Secure · Signed · Observable · Cross-platform</sub>
+</p>

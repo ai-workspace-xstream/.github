@@ -1,8 +1,22 @@
 <p align="center">
-  <a href="README.md">返回入口页</a> · <a href="README-en.md">English</a>
+  <img src="https://raw.githubusercontent.com/ai-workspace-xstream/.github/main/assets/xconnect-homepage-hero.png" alt="XConnect secure connectivity for AI workspaces" width="100%" />
 </p>
 
-# ai-workspace-xstream
+<h1 align="center">ai-workspace-xstream</h1>
+<p align="center"><strong>AI 工作区安全连接与边缘运行时</strong></p>
+
+<p align="center">
+  <a href="https://console.svc.plus/products/xconnect"><img src="https://img.shields.io/badge/XConnect-Console-0B5C7A?style=for-the-badge" alt="XConnect Console" /></a>
+  <a href="https://github.com/ai-workspace-xstream"><img src="https://img.shields.io/badge/GitHub-Organization-181717?style=for-the-badge&logo=github" alt="GitHub Organization" /></a>
+  <a href="https://github.com/ai-workspace-xstream/xconnect-gateway"><img src="https://img.shields.io/badge/Gateway-Linux-2563EB?style=for-the-badge" alt="Gateway Linux" /></a>
+  <a href="https://github.com/ai-workspace-xstream/xconnect-one"><img src="https://img.shields.io/badge/One-Cross--Platform-2F855A?style=for-the-badge" alt="One Cross-platform" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/ai-workspace-xstream/.github/blob/main/profile/README-zh.md">简体中文</a> ｜ <a href="https://github.com/ai-workspace-xstream/.github/blob/main/profile/README-en.md">English</a>
+</p>
+
+---
 
 ## 🇨🇳 组织概览
 
@@ -29,21 +43,26 @@
 
 ## 🏛️ 四大核心支柱
 
-### 🔐 Zero Trust Control Plane
-
-设备身份、一次性邀请、签名配置、会话续期和 ACK 构成网络控制边界。XConnect One 与 Gateway 在本地校验签名、过期时间、网络和角色绑定；控制面实现见 [accounts API](https://github.com/ai-workspace-services/accounts)。
-
-### 🌐 Edge & Relay Runtime
-
-`xconnect-edge-agent` 负责节点侧配置同步、心跳、Xray 生命周期与 Caddy TLS 入口；`xconnect-gateway` 提供独立的 Linux Server relay/service。两者都不把长期凭据或网络邀请写入仓库。
-
-### 💻 Controlled Client Experience
-
-`xconnect-one` 是独立发布的 Go CLI，管理受保护的本地 Xray/WireGuard 运行时；`xconnect-app` 提供 Flutter 桌面与移动端界面、节点管理和诊断能力，并通过明确的插件边界与 CLI 协作。
-
-### 📊 Observable & Operable
-
-`xray-exporter` 将 Xray/V2Ray Stats API 和访问日志转换为 Prometheus 指标；`docs` 集中维护架构、需求、Runbook、故障记录和发布说明。运行验证必须覆盖服务、握手、数据面和用户可见结果。
+<table>
+<tr>
+<td width="25%" align="center" valign="top">
+<h3>零信任控制面</h3>
+<p align="left"><sub>设备身份、一次性邀请、签名配置与会话续期，连接受控节点。</sub></p>
+</td>
+<td width="25%" align="center" valign="top">
+<h3>边缘节点与中继</h3>
+<p align="left"><sub>Edge Agent 同步节点配置；Gateway 提供 Linux 服务端中继。</sub></p>
+</td>
+<td width="25%" align="center" valign="top">
+<h3>受控客户端</h3>
+<p align="left"><sub>One 支持 macOS、Linux、Windows；App 提供桌面与移动端界面。</sub></p>
+</td>
+<td width="25%" align="center" valign="top">
+<h3>可观测与运维</h3>
+<p align="left"><sub>Xray 指标、节点日志、诊断与运行手册支撑连接验收。</sub></p>
+</td>
+</tr>
+</table>
 
 ---
 
@@ -55,11 +74,16 @@ flowchart LR
     B --> C[Gateway<br/>Linux Relay]
     B --> D[Edge Agent<br/>Node Sync & Xray]
     B --> E[One CLI<br/>Controlled Client]
-    E --> F[XConnect App<br/>Desktop & Mobile]
+    F[XConnect App<br/>Desktop & Mobile] -. optional integration .-> E
     C --> G[WireGuard / Xray Data Plane]
     D --> G
     E --> G
     G --> H[Handshake · ACK · Target Response]
+    style A fill:#DBEAFE,stroke:#3B82F6
+    style B fill:#FEF3C7,stroke:#F59E0B
+    style C fill:#ECFDF5,stroke:#10B981
+    style D fill:#ECFDF5,stroke:#10B981
+    style E fill:#F3E8FF,stroke:#8B5CF6
 ```
 
 1. 控制面签发设备或 Gateway 绑定的短期凭据与签名配置。
@@ -87,36 +111,18 @@ flowchart LR
 
 完整说明见：[XConnect / Proxy-Server 部署路线总览](https://github.com/ai-workspace-xstream/docs/blob/main/runbooks/2026-10-03-xconnect-deployment-routes.md)。
 
-### Proxy-Server 简单独立部署
+| 路线 | 控制面 | 组件与平台 |
+| --- | --- | --- |
+| Proxy-Server 独立部署 | standalone | Linux 节点、Caddy、Xray |
+| Proxy-Server Full Stack | Accounts + Vault | Edge Agent、证书同步、自监控 |
+| 数据面组件安装 | 安装后继续配置与注册 | Gateway：Linux；One：macOS / Linux / Windows |
+| XConnect Zero Full Stack | Zero API | Gateway / One 注册、签名配置、ACK |
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/ai-workspace-xstream/xconnect-edge-agent/main/scripts/setup-proxy.sh | \
-  bash -s -- --node <node-domain> --standalone
-```
-
-### Proxy-Server Full Stack
-
-在 Vault 或 Secret Manager 注入运行时凭据后执行：
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/ai-workspace-xstream/xconnect-edge-agent/main/scripts/setup-proxy.sh | \
-  bash -s -- --node "$AGENT_PROXY_DOMAIN" --with-observability
-```
-
-### XConnect Zero CLI 安装
-
-```bash
-curl -fsSL https://install.svc.plus/xconnect-gateway | \
-  sudo env XCONNECT_GATEWAY_VERSION=<approved-release-tag> bash
-
-curl -fsSL https://install.svc.plus/xconnect-one | \
-  sudo env XCONNECT_ONE_VERSION=<approved-release-tag> bash
-```
-
-安装器只安装并校验 CLI；enrollment、签名配置、运行时启动和数据面验收需要按对应 Runbook 继续执行。
+按部署指南选择对应路线；CLI 安装、网络注册和业务连通验收分别执行。
 
 ---
 
-📘 [完整部署路线文档](https://github.com/ai-workspace-xstream/docs/blob/main/runbooks/2026-10-03-xconnect-deployment-routes.md)
-
-Secure · Signed · Observable · Cross-platform · AI-workspace ready
+<p align="center">
+  <a href="https://github.com/ai-workspace-xstream/docs/blob/main/runbooks/2026-10-03-xconnect-deployment-routes.md"><strong>完整部署路线文档</strong></a><br />
+  <sub>Secure · Signed · Observable · Cross-platform</sub>
+</p>
