@@ -1,146 +1,173 @@
 <p align="center">
-  <img src="../assets/xconnect-homepage-hero.png" alt="XConnect AI 工作空间连接器与加速" width="100%" />
+  <img src="../assets/xconnect-homepage-hero.png" alt="XConnect secure connectivity for AI workspaces" width="100%" />
 </p>
 
 <p align="center">
-  <a href="https://console.svc.plus/products/xconnect"><strong>🚀 访问 XConnect 控制台 / Launch Console</strong></a>
+  <a href="https://console.svc.plus/products/xconnect"><strong>🚀 XConnect Console</strong></a>
   ·
-  <a href="https://github.com/ai-workspace-xstream/xconnect-app/releases/tag/main-149"><strong>📱 客户端下载 / Download App</strong></a>
+  <a href="https://github.com/ai-workspace-xstream/xconnect-app/releases"><strong>📱 Client Releases</strong></a>
   ·
-  <a href="https://github.com/ai-workspace-xstream/agent.svc.plus"><strong>⚡ 一键自建脚本 / One-Click Script</strong></a>
+  <a href="https://github.com/ai-workspace-xstream/docs"><strong>📚 Documentation</strong></a>
 </p>
 
 <p align="center">
-  <a href="https://console.svc.plus/products/xconnect"><img src="https://img.shields.io/badge/XConnect-Live%20Production%20Service-2563EB?style=flat-square" alt="XConnect live production service" /></a>
-  <a href="https://github.com/ai-workspace-xstream/xconnect-app/releases/tag/main-149"><img src="https://img.shields.io/badge/Client%20App-v85%25%20Ready-10B981?style=flat-square" alt="Client App 85% Ready" /></a>
-  <img src="https://img.shields.io/badge/OAuth-GitHub%20%2B%20Google-111827?style=flat-square" alt="GitHub and Google OAuth" />
-  <a href="https://github.com/ai-workspace-xstream"><img src="https://img.shields.io/badge/GitHub-Organization-181717?style=flat-square&logo=github" alt="GitHub organization" /></a>
+  <a href="https://github.com/ai-workspace-xstream"><img src="https://img.shields.io/badge/GitHub-ai--workspace--xstream-181717?style=flat-square&logo=github" alt="GitHub organization" /></a>
+  <a href="https://github.com/ai-workspace-xstream/xconnect-one"><img src="https://img.shields.io/badge/Runtime-XConnect%20One-2563EB?style=flat-square" alt="XConnect One" /></a>
+  <a href="https://github.com/ai-workspace-xstream/xconnect-gateway"><img src="https://img.shields.io/badge/Relay-XConnect%20Gateway-7C3AED?style=flat-square" alt="XConnect Gateway" /></a>
+  <a href="https://github.com/ai-workspace-xstream/xconnect-app"><img src="https://img.shields.io/badge/Client-Flutter-10B981?style=flat-square&logo=flutter" alt="Flutter client" /></a>
 </p>
 
 <p align="center">
-  <a href="#中文">🇨🇳 中文向导</a> ｜ <a href="#english">🇬🇧 English Guide</a>
+  <a href="#中文">🇨🇳 简体中文</a> ｜ <a href="#english">🇬🇧 English</a>
 </p>
 
 ---
 
-## <a id="中文"></a>🇨🇳 中文向导
+## <a id="中文"></a>🇨🇳 组织概览
 
-### 欢迎使用 XConnect / XStream 开源生态
+`ai-workspace-xstream` 是 AI Workspace 的连接与边缘运行时组织。我们围绕 XConnect Zero Trust 网络，将控制面、Linux Gateway、边缘节点、受控客户端、跨平台 App 与可观测组件拆分为可独立发布、可验证和可运维的开源项目。
 
-**XConnect** 是专为开发者、AI 爱好者与团队打造的 **AI 工作空间连接器与网络加速体系**。无论你是想要 3 分钟一键自建专属节点，还是开箱即用的免运维云服务，亦或是搭建私有多租户加速平台，这里都提供了完整的向导式解决方案。
+我们的目标不是把所有能力塞进一个客户端，而是让每个网络角色拥有清晰的边界：控制面负责身份与签名配置，Gateway 负责服务端转发，Edge Agent 负责节点同步，One 和 XConnect App 负责受控客户端运行时。
+
+### 我们的使命与交付准则
+
+* **控制面唯一可信**：节点和客户端通过受保护的 API 获取设备绑定、签名和过期检查后的配置，不直接访问控制面数据库。
+* **签名配置与不可变构件**：拒绝未签名、过期、跨网络或跨 Gateway 的配置；发布制品使用明确版本和 `SHA256SUMS` 校验。
+* **运行时最小权限**：邀请、Token、私钥和 TLS 材料只在运行时注入或保存在受保护目录，不进入 Git、日志或公开命令示例。
+* **角色与平台隔离**：Linux Gateway、边缘节点、One CLI 和桌面/移动 App 各自维护自己的状态与生命周期，避免共享可变状态。
+* **可验证的网络路径**：服务状态、WireGuard handshake、Xray 数据面和目标服务响应分别验证；单个进程 active 不等于端到端连接成功。
+
+### 常用访问入口
+
+* 控制台：[XConnect Console](https://console.svc.plus/products/xconnect)
+* 组织主页：[ai-workspace-xstream](https://github.com/ai-workspace-xstream)
+* 架构与运行文档：[docs](https://github.com/ai-workspace-xstream/docs)
+* 客户端发布：[xconnect-app Releases](https://github.com/ai-workspace-xstream/xconnect-app/releases)
 
 ---
 
-### 🧭 三大使用路线（找到最适合你的方式）
+## 🏛️ 四大核心支柱
+
+### 🔐 Zero Trust Control Plane
+
+设备身份、一次性邀请、签名配置、会话续期和 ACK 构成网络控制边界。XConnect One 与 Gateway 在本地校验签名、过期时间、网络和角色绑定；控制面实现见 [accounts API](https://github.com/ai-workspace-services/accounts)。
+
+### 🌐 Edge & Relay Runtime
+
+`xconnect-edge-agent` 负责节点侧配置同步、心跳、Xray 生命周期与 Caddy TLS 入口；`xconnect-gateway` 提供独立的 Linux Server relay/service。两者都不把长期凭据或网络邀请写入仓库。
+
+### 💻 Controlled Client Experience
+
+`xconnect-one` 是独立发布的 Go CLI，管理受保护的本地 Xray/WireGuard 运行时；`xconnect-app` 提供 Flutter 桌面与移动端界面、节点管理和诊断能力，并通过明确的插件边界与 CLI 协作。
+
+### 📊 Observable & Operable
+
+`xray-exporter` 将 Xray/V2Ray Stats API 和访问日志转换为 Prometheus 指标；`docs` 集中维护架构、需求、Runbook、故障记录和发布说明。运行验证必须覆盖服务、握手、数据面和用户可见结果。
+
+---
+
+## 🔄 从签名配置到可用连接
 
 ```mermaid
 flowchart LR
-    Start([选择适合你的路线]) --> PathA["🚀 路线一：极简一键自建<br/>适合：个人/小白 (1个域名+1台VPS)"]
-    Start --> PathB["⚡ 路线二：免运维云端托管<br/>适合：不想买服务器/开箱即用"]
-    Start --> PathC["🏗️ 路线三：全栈开源私有部署<br/>适合：团队/企业/极客自建"]
+    A[Control Plane<br/>Identity & Signed Config] --> B{Runtime Role}
+    B --> C[Gateway<br/>Linux Relay]
+    B --> D[Edge Agent<br/>Node Sync & Xray]
+    B --> E[One CLI<br/>Controlled Client]
+    E --> F[XConnect App<br/>Desktop & Mobile]
+    C --> G[WireGuard / Xray Data Plane]
+    D --> G
+    E --> G
+    G --> H[Handshake · ACK · Target Response]
 ```
 
----
-
-#### 🚀 路线一：3 分钟极简一键自建（只要 1 个域名 + 1 台 VPS）
-
-> **适合人群**：手头有一台 Linux VPS 和一个域名的个人用户，想用最简单、最干净的方式搭建专属加速节点。
-
-1. **准备工作**：将你的域名（例如 `xhttp.example.com`）解析 A 记录到你的 VPS IP 地址。
-2. **一行命令部署**（SSH 登录你的 VPS 后执行）：
-   ```bash
-   curl -fsSL https://raw.githubusercontent.com/cloud-neutral-toolkit/agent.svc.plus/main/scripts/setup-proxy.sh | \
-     bash -s -- --node xhttp.example.com
-   ```
-   *(💡 纯独立自建亦可添加 `--standalone` 参数)*
-3. **全自动就绪**：
-   - 自动申请与续期 HTTPS TLS 证书（Caddy 驱动）
-   - 自动配置 Xray-core（支持 XHTTP 与 TCP Vision 协议）
-   - 自动开启 Linux 内核级低延迟 BBR + FQ 优化
-   - **终端即刻输出 `vless://...` 节点导入链接**！
-4. **客户端连接**：
-   - 🌟 **推荐尝鲜自研客户端**：下载 **[XConnect 客户端（完成度 85% 体验版）](https://github.com/ai-workspace-xstream/xconnect-app/releases/tag/main-149)**（支持 macOS / Windows / iOS / Linux 原生界面）
-   - 📱 **或使用通用客户端**：复制终端输出的链接，直接导入至 OneXray、v2rayN、v2rayNG、Sing-box、Surge 等客户端即可开始加速。
+1. 控制面签发设备或 Gateway 绑定的短期凭据与签名配置。
+2. Gateway、Edge Agent 或 One 在本地验证配置，再写入各自受保护的状态目录。
+3. Xray 与 WireGuard 建立数据面连接，客户端只使用自己拥有的接口和状态。
+4. 通过服务状态、最新 handshake、ACK 和一个真实目标响应完成验收。
 
 ---
 
-#### ⚡ 路线二：免运维云端托管服务（开箱即用 · 零维护）
+## 📦 核心仓库矩阵（7 Repositories）
 
-> **适合人群**：不想买 VPS、不想折腾 Linux 运维，需要稳定加速访问 Cursor、ChatGPT、Claude、GitHub 与海外 AI API 的用户。
-
-- 👉 **直接登录控制台**：**[https://console.svc.plus/products/xconnect](https://console.svc.plus/products/xconnect)**
-- **特性**：
-  - 支持 **GitHub OAuth** 与 **Google OAuth** 一键安全免密登录。
-  - 全球优质节点自动调度与智能路由，低延迟、高可用。
-  - Web 控制台支持一键订阅分发与客户端联动。
-
----
-
-#### 🏗️ 路线三：全栈开源私有化部署（前后端 + 多租户 DB）
-
-> **适合人群**：企业、技术团队或极客开发者，需要自建完整的 Web 控制台、多租户鉴权体系、节点自动化集群与私有客户端。
-
-本组织提供全套 100% 开源项目矩阵：
-
-| 开源仓库 | 定位与职责 | 技术栈 |
-| :--- | :--- | :--- |
-| 🌐 **[portal](https://github.com/ai-workspace-xstream/portal)** | 现代化 Web 前端与运营控制台（多租户管理、OAuth 认证、节点监控） | Next.js, React, Tailwind CSS |
-| 🤖 **[agent.svc.plus](https://github.com/ai-workspace-xstream/agent.svc.plus)** | 节点轻量级控制守护进程（配置自动同步、Xray 进程生命周期、TLS 证书） | Go, Caddy, Xray-core |
-| 🗄️ **[postgresql.svc.plus](https://github.com/ai-workspace-xstream/postgresql.svc.plus)** | 高可用多租户数据库方案与安全 TLS 隧道 | PostgreSQL, Stunnel |
-| 📱 **[xconnect-app](https://github.com/ai-workspace-xstream/xconnect-app)** | 跨平台原生客户端（系统级代理、虚拟网卡 Tunnel、节点订阅管理） | Flutter, Go Mobile, Swift |
-| 📚 **[docs](https://github.com/ai-workspace-xstream/docs)** | 架构设计、需求规范、运维 Runbook 与故障复盘文档 | Markdown |
+| 仓库 | 类型 / 定位 | 说明 |
+| --- | --- | --- |
+| [`xconnect-gateway`](https://github.com/ai-workspace-xstream/xconnect-gateway) | `Linux Relay Runtime` | 独立 Linux Gateway；执行加入、会话续期、签名 Gateway 配置同步、WireGuard/Xray 应用与 ACK。 |
+| [`xconnect-edge-agent`](https://github.com/ai-workspace-xstream/xconnect-edge-agent) | `Edge Control Agent` | 节点侧控制代理；同步配置、上报心跳、管理 Xray 生命周期，并由 Caddy 提供 HTTPS/TLS 入口。 |
+| [`xconnect-one`](https://github.com/ai-workspace-xstream/xconnect-one) | `Controlled Client CLI` | 独立 Go CLI；管理设备绑定的 WireGuard/Xray 客户端运行时和本地状态。 |
+| [`xconnect-app`](https://github.com/ai-workspace-xstream/xconnect-app) | `Desktop & Mobile Client` | Flutter 客户端；提供节点导入、代理模式、Tunnel、诊断和平台打包产物。 |
+| [`xray-exporter`](https://github.com/ai-workspace-xstream/xray-exporter) | `Telemetry Exporter` | 采集 Xray/V2Ray Stats API 与访问日志并导出 Prometheus 指标。 |
+| [`docs`](https://github.com/ai-workspace-xstream/docs) | `Architecture & Runbooks` | 维护需求、计划、架构、决策、Runbook、故障和发布记录。 |
+| [`.github`](https://github.com/ai-workspace-xstream/.github) | `Organization Profile` | 组织级说明、项目入口和协作边界。 |
 
 ---
 
-### 📱 客户端下载专区 (XConnect App)
+## 🚀 快速入口
 
-> 当前版本完成度约 **85%**，欢迎下载体验并反馈建议！
+### Edge Agent：Linux 节点
 
-| 平台 | 支持架构 | 状态 | 下载链接 |
-| :--- | :--- | :--- | :--- |
-| **macOS** | Apple Silicon (arm64) | ✅ 稳定可用 | [下载 DMG](https://github.com/ai-workspace-xstream/xconnect-app/releases/tag/main-149) |
-| **Windows** | x64 / x86_64 | ✅ 稳定可用 | [下载 MSI / ZIP](https://github.com/ai-workspace-xstream/xconnect-app/releases/tag/main-149) |
-| **iOS** | arm64 | ✅ 体验测试 | [下载 IPA / 发布页](https://github.com/ai-workspace-xstream/xconnect-app/releases/tag/main-149) |
-| **Linux** | x64 / amd64 | ⚠️ 预览测试 | [下载 AppImage / DEB](https://github.com/ai-workspace-xstream/xconnect-app/releases/tag/main-149) |
-| **Android** | arm64 | ⚠️ 预览测试 | [下载 APK](https://github.com/ai-workspace-xstream/xconnect-app/releases/tag/main-149) |
+在目标节点使用受信任的运行时环境执行；生产环境请先通过 Vault 或其他 Secret Manager 注入凭据，并固定经过审查的 Release/commit。
 
----
+```bash
+curl -fsSL https://raw.githubusercontent.com/ai-workspace-xstream/xconnect-edge-agent/main/scripts/setup-proxy.sh | \
+  bash -s -- --node <node-domain>
+```
 
-## <a id="english"></a>🇬🇧 English Guide
+完全独立运行时追加 `--standalone`。该脚本会修改目标主机的依赖、服务、配置和网络设置，不能视为只下载一个 CLI。
 
-### Welcome to the XConnect / XStream Ecosystem
+### One：受控客户端 CLI
 
-**XConnect** is a next-generation **AI Workspace Connector & Network Acceleration Suite** designed for developers, AI practitioners, and teams. Whether you need a 3-minute self-hosted node, a managed zero-maintenance cloud platform, or a full-stack multi-tenant enterprise deployment, XConnect provides a streamlined, wizard-guided journey.
+```bash
+curl -fsSL https://install.svc.plus/xconnect-one | \
+  sudo env XCONNECT_ONE_VERSION=<approved-release-tag> bash
+```
 
----
+安装器只负责下载并校验 CLI；不会自动消费邀请、加入网络、安装外部 Xray/WireGuard 或启动数据面。
 
-### 🧭 Choose Your Path
+### Gateway：Linux Relay
 
-#### 🚀 Path A: 3-Minute Quick Self-Host (1 Domain + 1 VPS)
-- **Prerequisite**: 1 Linux VPS + 1 domain pointing to your VPS IP (e.g. `xhttp.example.com`).
-- **One-Command Setup**:
-  ```bash
-  curl -fsSL https://raw.githubusercontent.com/cloud-neutral-toolkit/agent.svc.plus/main/scripts/setup-proxy.sh | \
-    bash -s -- --node xhttp.example.com
-  ```
-- **Automated**: Caddy TLS certificates, Xray-core (XHTTP & TCP Vision), BBR/FQ kernel optimizations, and instant VLESS node links output to terminal.
-- **Client Connect**:
-  - Download our custom **[XConnect App (85% Ready Preview)](https://github.com/ai-workspace-xstream/xconnect-app/releases/tag/main-149)**.
-  - Or import into OneXray, v2rayN, Sing-box, or Surge directly.
+```bash
+curl -fsSL https://install.svc.plus/xconnect-gateway | \
+  sudo env XCONNECT_GATEWAY_VERSION=<approved-release-tag> bash
+```
 
-#### ⚡ Path B: Zero-Ops Managed Cloud Service
-- **Launch Console**: **[https://console.svc.plus/products/xconnect](https://console.svc.plus/products/xconnect)**
-- Instant sign-in via GitHub / Google OAuth.
-- Smart global routing, continuous availability, zero server maintenance required.
+安装器只负责下载并校验 Gateway CLI；不会执行 enrollment、写入长期凭据、安装 Xray/WireGuard 或启动网络服务。
 
-#### 🏗️ Path C: Full-Stack Open-Source Deployment (Web UI + Multi-Tenant DB)
-- **[portal](https://github.com/ai-workspace-xstream/portal)**: Web UI console with OAuth, user management, and subscription delivery.
-- **[agent.svc.plus](https://github.com/ai-workspace-xstream/agent.svc.plus)**: Lightweight Go daemon for automated config sync and Xray management.
-- **[postgresql.svc.plus](https://github.com/ai-workspace-xstream/postgresql.svc.plus)**: Multi-tenant database & TLS tunnel stack.
-- **[xconnect-app](https://github.com/ai-workspace-xstream/xconnect-app)**: Flutter + Go desktop and mobile client source code.
+> 版本标签必须与对应 GitHub Release、`SHA256SUMS` 和托管安装脚本保持一致。安装命令中的 `<approved-release-tag>` 不应替换成未经审查的 `latest`。
 
 ---
 
-<p align="center">
-  <a href="https://console.svc.plus/products/xconnect"><strong>访问 XConnect 控制台 / Launch XConnect Console</strong></a>
-</p>
+## 🇬🇧 English
+
+`ai-workspace-xstream` is the connectivity and edge-runtime organization for AI Workspace. We build the XConnect Zero Trust network as independently releasable and verifiable components: a control-plane contract, Linux Gateway, edge agent, controlled client CLI, cross-platform app, telemetry exporter, and operational documentation.
+
+### Mission and delivery principles
+
+* **One control-plane authority:** clients and nodes consume protected APIs and signed configuration instead of accessing the control-plane database directly.
+* **Signed configuration and immutable artifacts:** reject unsigned, expired, cross-network, or cross-Gateway configuration; verify release artifacts with explicit versions and `SHA256SUMS`.
+* **Runtime-only secrets:** invitations, tokens, private keys, and TLS material are injected at runtime or kept in protected directories, never committed to Git or printed in logs.
+* **Separated runtime roles:** Gateway, Edge Agent, One, and the App own separate state and lifecycle boundaries.
+* **End-to-end verification:** service state alone is not acceptance; verify the WireGuard handshake, data plane, ACK, and a real target response.
+
+### Core pillars
+
+* **Zero Trust Control Plane** — device identity, short-lived invitations, signed configuration, session renewal, and ACK.
+* **Edge & Relay Runtime** — Linux Gateway and Edge Agent for forwarding, synchronization, TLS, and Xray lifecycle management.
+* **Controlled Client Experience** — XConnect One CLI and XConnect App for protected local runtimes and diagnostics.
+* **Observable & Operable** — Prometheus exporter plus architecture, runbook, incident, and release documentation.
+
+### Repository map
+
+| Repository | Role |
+| --- | --- |
+| [`xconnect-gateway`](https://github.com/ai-workspace-xstream/xconnect-gateway) | Linux relay runtime |
+| [`xconnect-edge-agent`](https://github.com/ai-workspace-xstream/xconnect-edge-agent) | Node-side control agent |
+| [`xconnect-one`](https://github.com/ai-workspace-xstream/xconnect-one) | Controlled client CLI |
+| [`xconnect-app`](https://github.com/ai-workspace-xstream/xconnect-app) | Desktop and mobile client |
+| [`xray-exporter`](https://github.com/ai-workspace-xstream/xray-exporter) | Xray/V2Ray Prometheus exporter |
+| [`docs`](https://github.com/ai-workspace-xstream/docs) | Architecture and operations documentation |
+| [`.github`](https://github.com/ai-workspace-xstream/.github) | Organization profile and collaboration boundary |
+
+---
+
+Secure · Signed · Observable · Cross-platform · AI-workspace ready
