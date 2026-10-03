@@ -170,4 +170,6 @@ curl -fsSL https://install.svc.plus/xconnect-gateway | \
 
 ---
 
+📘 **完整部署路线 / Deployment routes:** [XConnect / Proxy-Server 部署路线总览](https://github.com/ai-workspace-xstream/docs/blob/main/runbooks/2026-10-03-xconnect-deployment-routes.md)
+
 Secure · Signed · Observable · Cross-platform · AI-workspace ready
